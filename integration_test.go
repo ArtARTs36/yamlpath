@@ -39,8 +39,10 @@ user:
 			doc, err := yamlpath.Unmarshall([]byte(c.Content))
 			require.NoError(t, err)
 
-			res, err := doc.Get(yamlpath.NewPointer(c.Pointer))
+			elem, err := doc.Get(yamlpath.NewPointer(c.Pointer))
 			require.NoError(t, err)
+
+			res, err := elem.AsScalar()
 			assert.Equal(t, c.Expected, res)
 		})
 	}

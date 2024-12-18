@@ -21,8 +21,8 @@ func (i *Int) Append(_ Pointer, value interface{}) error {
 	return nil
 }
 
-func (i *Int) Get(_ Pointer) (interface{}, error) {
-	return i.value, nil
+func (i *Int) Get(_ Pointer) (Element, error) {
+	return i, nil
 }
 
 func (i *Int) Update(pointer Pointer, value interface{}) error {
@@ -45,5 +45,13 @@ func (i *Int) UnmarshalYAML(node *yaml.Node) error {
 }
 
 func (i *Int) MarshalYAML() (interface{}, error) {
+	return i.value, nil
+}
+
+func (i *Int) Marshal() ([]byte, error) {
+	return yaml.Marshal(i.value)
+}
+
+func (i *Int) AsScalar() (interface{}, error) {
 	return i.value, nil
 }

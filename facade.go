@@ -16,17 +16,21 @@ func Unmarshall(content []byte) (*Document, error) {
 	return &doc, nil
 }
 
-func Marshall(doc *Document) ([]byte, error) {
-	return yaml.Marshal(doc)
-}
-
-func Get(content []byte, pointer string) (interface{}, error) {
+func Get(content []byte, pointer string) (Element, error) {
 	doc, err := Unmarshall(content)
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshalling yaml: %w", err)
 	}
 
 	return doc.Get(NewPointer(pointer))
+}
+
+func GetScalar(content []byte, pointer string) (interface{}, error) {
+	elem, err := Get(content, pointer)
+	if err != nil {
+		return nil, err
+	}
+	return elem.AsScalar()
 }
 
 func Update(content []byte, pointer string, value interface{}) error {

@@ -29,9 +29,9 @@ func (s *Slice) Append(pointer Pointer, value interface{}) error {
 	return nil
 }
 
-func (s *Slice) Get(pointer Pointer) (interface{}, error) {
+func (s *Slice) Get(pointer Pointer) (Element, error) {
 	if !pointer.HasChild() {
-		return s.value, nil
+		return s, nil
 	}
 
 	index, err := strconv.Atoi(pointer.Head())
@@ -97,4 +97,12 @@ func (s *Slice) MarshalYAML() (interface{}, error) {
 	}
 
 	return &node, nil
+}
+
+func (s *Slice) Marshal() ([]byte, error) {
+	return yaml.Marshal(s.value)
+}
+
+func (s *Slice) AsScalar() (interface{}, error) {
+	return nil, ErrElementNoScalar
 }

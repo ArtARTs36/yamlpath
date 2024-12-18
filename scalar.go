@@ -14,7 +14,7 @@ func (s *Scalar) Append(pointer Pointer, value interface{}) error {
 	return s.value.Append(pointer, value)
 }
 
-func (s *Scalar) Get(pointer Pointer) (interface{}, error) {
+func (s *Scalar) Get(pointer Pointer) (Element, error) {
 	return s.value.Get(pointer)
 }
 
@@ -39,4 +39,12 @@ func (s *Scalar) UnmarshalYAML(node *yaml.Node) error {
 
 func (s *Scalar) MarshalYAML() (interface{}, error) {
 	return s.value.MarshalYAML()
+}
+
+func (s *Scalar) Marshal() ([]byte, error) {
+	return yaml.Marshal(s.value)
+}
+
+func (s *Scalar) AsScalar() (interface{}, error) {
+	return s.value.AsScalar()
 }

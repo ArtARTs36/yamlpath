@@ -22,9 +22,9 @@ func (m *StringMap) Append(pointer Pointer, value interface{}) error {
 	return m.value[pointer.Head()].Append(pointer.Child(), value)
 }
 
-func (m *StringMap) Get(pointer Pointer) (interface{}, error) {
+func (m *StringMap) Get(pointer Pointer) (Element, error) {
 	if !pointer.HasChild() {
-		return m.value, nil
+		return m, nil
 	}
 
 	val, ok := m.value[pointer.Head()]
@@ -91,4 +91,12 @@ func (m *StringMap) MarshalYAML() (interface{}, error) {
 	}
 
 	return &node, nil
+}
+
+func (m *StringMap) Marshal() ([]byte, error) {
+	return yaml.Marshal(m.value)
+}
+
+func (m *StringMap) AsScalar() (interface{}, error) {
+	return m.value, nil
 }

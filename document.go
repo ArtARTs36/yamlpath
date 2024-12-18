@@ -14,7 +14,7 @@ func (d *Document) Append(pointer Pointer, value interface{}) error {
 	return d.doc.Append(pointer, value)
 }
 
-func (d *Document) Get(pointer Pointer) (interface{}, error) {
+func (d *Document) Get(pointer Pointer) (Element, error) {
 	return d.doc.Get(pointer)
 }
 
@@ -33,4 +33,12 @@ func (d *Document) UnmarshalYAML(node *yaml.Node) error {
 
 func (d *Document) MarshalYAML() (interface{}, error) {
 	return d.doc.MarshalYAML()
+}
+
+func (d *Document) Marshal() ([]byte, error) {
+	return yaml.Marshal(d.doc)
+}
+
+func (d *Document) AsScalar() (interface{}, error) {
+	return nil, ErrElementNoScalar
 }

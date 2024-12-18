@@ -14,7 +14,7 @@ func (m *Mixed) Append(pointer Pointer, value interface{}) error {
 	return m.elem.Append(pointer, value)
 }
 
-func (m *Mixed) Get(pointer Pointer) (interface{}, error) {
+func (m *Mixed) Get(pointer Pointer) (Element, error) {
 	return m.elem.Get(pointer)
 }
 
@@ -47,4 +47,12 @@ func (m *Mixed) UnmarshalYAML(node *yaml.Node) error {
 
 func (m *Mixed) MarshalYAML() (interface{}, error) {
 	return m.elem.MarshalYAML()
+}
+
+func (m *Mixed) Marshal() ([]byte, error) {
+	return yaml.Marshal(m.elem)
+}
+
+func (m *Mixed) AsScalar() (interface{}, error) {
+	return m.elem.AsScalar()
 }

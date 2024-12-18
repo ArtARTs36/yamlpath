@@ -48,7 +48,6 @@ func main() {
 package main
 
 import (
-	"fmt"
 	"github.com/artarts36/yamlpath"
 )
 
