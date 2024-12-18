@@ -36,7 +36,7 @@ func (d *Document) MarshalYAML() (interface{}, error) {
 }
 
 func (d *Document) Marshal() ([]byte, error) {
-	return yaml.Marshal(d.doc)
+	return yaml.Marshal(d)
 }
 
 func (d *Document) AsScalar() (interface{}, error) {

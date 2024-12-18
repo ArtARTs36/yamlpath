@@ -56,14 +56,17 @@ func (s *Slice) Update(pointer Pointer, value interface{}) error {
 		return fmt.Errorf("index out of bounds: %d", index)
 	}
 
-	val, err := resolveValueElement(value)
-	if err != nil {
-		return fmt.Errorf("cannot resolve value element: %w", err)
+	if !pointer.HasChild() {
+		val, verr := resolveValueElement(value)
+		if verr != nil {
+			return fmt.Errorf("cannot resolve value element: %w", verr)
+		}
+
+		s.value[index] = val
+		return nil
 	}
 
-	s.value[index] = val
-
-	return nil
+	return s.value[index].Update(pointer.Child(), value)
 }
 
 func (s *Slice) UnmarshalYAML(node *yaml.Node) error {

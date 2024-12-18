@@ -2,11 +2,12 @@ package yamlpath
 
 import (
 	"fmt"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 	"gopkg.in/yaml.v3"
 )
 
 type StringMap struct {
-	value map[string]Element
+	value *orderedmap.OrderedMap[string, Element]
 }
 
 func (m *StringMap) Append(pointer Pointer, value interface{}) error {
@@ -14,12 +15,12 @@ func (m *StringMap) Append(pointer Pointer, value interface{}) error {
 		return fmt.Errorf("cannot append value to a nil pointer")
 	}
 
-	_, ok := m.value[pointer.Head()]
+	val, ok := m.value.Get(pointer.Head())
 	if !ok {
 		return fmt.Errorf("no value for key %q", pointer.Head())
 	}
 
-	return m.value[pointer.Head()].Append(pointer.Child(), value)
+	return val.Append(pointer.Child(), value)
 }
 
 func (m *StringMap) Get(pointer Pointer) (Element, error) {
@@ -27,7 +28,7 @@ func (m *StringMap) Get(pointer Pointer) (Element, error) {
 		return m, nil
 	}
 
-	val, ok := m.value[pointer.Head()]
+	val, ok := m.value.Get(pointer.Head())
 	if !ok {
 		return nil, fmt.Errorf("no value for key %q at pointer %q", pointer.Head(), pointer.Head())
 	}
@@ -36,20 +37,21 @@ func (m *StringMap) Get(pointer Pointer) (Element, error) {
 }
 
 func (m *StringMap) Update(pointer Pointer, value interface{}) error {
-	if _, exists := m.value[pointer.Head()]; !exists {
+	item, exists := m.value.Get(pointer.Head())
+	if !exists {
 		val, err := resolveValueElement(value)
 		if err != nil {
 			return err
 		}
-		m.value[pointer.Head()] = val
+		m.value.Set(pointer.Head(), val)
 		return nil
 	}
 
-	return m.value[pointer.Head()].Update(pointer.Child(), value)
+	return item.Update(pointer.Child(), value)
 }
 
 func (m *StringMap) UnmarshalYAML(node *yaml.Node) error {
-	m.value = make(map[string]Element)
+	m.value = orderedmap.New[string, Element]()
 
 	for index := 0; index < len(node.Content); index += 2 {
 		var key string
@@ -62,7 +64,7 @@ func (m *StringMap) UnmarshalYAML(node *yaml.Node) error {
 			return err
 		}
 
-		m.value[key] = &val
+		m.value.Set(key, &val)
 	}
 
 	return nil
@@ -73,11 +75,11 @@ func (m *StringMap) MarshalYAML() (interface{}, error) {
 		Kind: yaml.MappingNode,
 	}
 
-	for key, value := range m.value {
+	for pair := m.value.Oldest(); pair != nil; pair = pair.Next() {
+		key, value := pair.Key, pair.Value
+
 		keyNode := &yaml.Node{}
 
-		// serialize key to yaml, then deserialize it back into the node
-		// this is a hack to get the correct tag for the key
 		if err := keyNode.Encode(key); err != nil {
 			return nil, err
 		}

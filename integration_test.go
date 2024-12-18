@@ -47,3 +47,46 @@ user:
 		})
 	}
 }
+
+func TestUpdate(t *testing.T) {
+	t.Run("update map", func(t *testing.T) {
+		input := `user:
+    name: John`
+
+		expected := `user:
+    name: Ivan
+`
+
+		doc, err := yamlpath.Unmarshall([]byte(input))
+		require.NoError(t, err)
+
+		err = doc.Update(yamlpath.NewPointer("user.name"), "Ivan")
+		require.NoError(t, err)
+
+		res, err := doc.Marshal()
+		require.NoError(t, err)
+
+		assert.Equal(t, expected, string(res))
+	})
+
+	t.Run("update map in slice", func(t *testing.T) {
+		input := `users:
+    - name: John
+`
+
+		expected := `users:
+    - name: Ivan
+`
+
+		doc, err := yamlpath.Unmarshall([]byte(input))
+		require.NoError(t, err)
+
+		err = doc.Update(yamlpath.NewPointer("users.0.name"), "Ivan")
+		require.NoError(t, err)
+
+		res, err := doc.Marshal()
+		require.NoError(t, err)
+
+		assert.Equal(t, expected, string(res))
+	})
+}
