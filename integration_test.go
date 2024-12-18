@@ -36,7 +36,7 @@ user:
 
 	for _, c := range cases {
 		t.Run(c.Title, func(t *testing.T) {
-			doc, err := yamlpath.Unmarshall([]byte(c.Content))
+			doc, err := yamlpath.Unmarshal([]byte(c.Content))
 			require.NoError(t, err)
 
 			elem, err := doc.Get(yamlpath.NewPointer(c.Pointer))
@@ -57,7 +57,7 @@ func TestUpdate(t *testing.T) {
     name: Ivan
 `
 
-		doc, err := yamlpath.Unmarshall([]byte(input))
+		doc, err := yamlpath.Unmarshal([]byte(input))
 		require.NoError(t, err)
 
 		err = doc.Update(yamlpath.NewPointer("user.name"), "Ivan")
@@ -78,7 +78,7 @@ func TestUpdate(t *testing.T) {
     - name: Ivan
 `
 
-		doc, err := yamlpath.Unmarshall([]byte(input))
+		doc, err := yamlpath.Unmarshal([]byte(input))
 		require.NoError(t, err)
 
 		err = doc.Update(yamlpath.NewPointer("users.0.name"), "Ivan")

@@ -5,7 +5,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func Unmarshall(content []byte) (*Document, error) {
+func Unmarshal(content []byte) (*Document, error) {
 	var doc Document
 
 	err := yaml.Unmarshal(content, &doc)
@@ -17,7 +17,7 @@ func Unmarshall(content []byte) (*Document, error) {
 }
 
 func Get(content []byte, pointer string) (Element, error) {
-	doc, err := Unmarshall(content)
+	doc, err := Unmarshal(content)
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshalling yaml: %w", err)
 	}
@@ -34,7 +34,7 @@ func GetScalar(content []byte, pointer string) (interface{}, error) {
 }
 
 func Update(content []byte, pointer string, value interface{}) error {
-	doc, err := Unmarshall(content)
+	doc, err := Unmarshal(content)
 	if err != nil {
 		return fmt.Errorf("error unmarshalling yaml: %w", err)
 	}
@@ -43,7 +43,7 @@ func Update(content []byte, pointer string, value interface{}) error {
 }
 
 func Append(content []byte, pointer string, value interface{}) error {
-	doc, err := Unmarshall(content)
+	doc, err := Unmarshal(content)
 	if err != nil {
 		return fmt.Errorf("error unmarshalling yaml: %w", err)
 	}
