@@ -32,6 +32,22 @@ user:
 			Pointer:  "user.age",
 			Expected: 99,
 		},
+		{
+			Title: "get bool true",
+			Content: `
+user:
+   active: true`,
+			Pointer:  "user.active",
+			Expected: true,
+		},
+		{
+			Title: "get bool false",
+			Content: `
+user:
+   active: false`,
+			Pointer:  "user.active",
+			Expected: false,
+		},
 	}
 
 	for _, c := range cases {

@@ -27,6 +27,11 @@ func (s *Scalar) UnmarshalYAML(node *yaml.Node) error {
 		return errors.New("expected scalar node")
 	}
 
+	if node.Tag == "!!bool" {
+		s.value = &Bool{}
+		return node.Decode(s.value)
+	}
+
 	if intVal, err := strconv.Atoi(node.Value); err == nil {
 		s.value = &Int{intVal}
 		return nil
