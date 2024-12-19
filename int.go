@@ -10,7 +10,7 @@ type Int struct {
 	value int
 }
 
-func (i *Int) Append(_ Pointer, value interface{}) error {
+func (i *Int) Append(_ *Pointer, value interface{}) error {
 	intValue, ok := value.(int)
 	if !ok {
 		return errors.New("cannot append int value")
@@ -21,11 +21,11 @@ func (i *Int) Append(_ Pointer, value interface{}) error {
 	return nil
 }
 
-func (i *Int) Get(_ Pointer) (Element, error) {
+func (i *Int) Get(_ *Pointer) (Element, error) {
 	return i, nil
 }
 
-func (i *Int) Update(pointer Pointer, value interface{}) error {
+func (i *Int) Update(pointer *Pointer, value interface{}) error {
 	if !pointer.IsTarget() {
 		return errors.New("pointer is not target")
 	}

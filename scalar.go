@@ -10,15 +10,15 @@ type Scalar struct {
 	value Element
 }
 
-func (s *Scalar) Append(pointer Pointer, value interface{}) error {
+func (s *Scalar) Append(pointer *Pointer, value interface{}) error {
 	return s.value.Append(pointer, value)
 }
 
-func (s *Scalar) Get(pointer Pointer) (Element, error) {
+func (s *Scalar) Get(pointer *Pointer) (Element, error) {
 	return s.value.Get(pointer)
 }
 
-func (s *Scalar) Update(pointer Pointer, value interface{}) error {
+func (s *Scalar) Update(pointer *Pointer, value interface{}) error {
 	return s.value.Update(pointer, value)
 }
 

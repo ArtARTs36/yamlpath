@@ -10,15 +10,15 @@ type Mixed struct {
 	elem Element
 }
 
-func (m *Mixed) Append(pointer Pointer, value interface{}) error {
+func (m *Mixed) Append(pointer *Pointer, value interface{}) error {
 	return m.elem.Append(pointer, value)
 }
 
-func (m *Mixed) Get(pointer Pointer) (Element, error) {
+func (m *Mixed) Get(pointer *Pointer) (Element, error) {
 	return m.elem.Get(pointer)
 }
 
-func (m *Mixed) Update(pointer Pointer, value interface{}) error {
+func (m *Mixed) Update(pointer *Pointer, value interface{}) error {
 	if pointer.IsTarget() {
 		var err error
 		m.elem, err = resolveValueElement(value)

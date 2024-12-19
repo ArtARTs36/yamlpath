@@ -11,7 +11,7 @@ type Slice struct {
 	value []Element
 }
 
-func (s *Slice) Append(pointer Pointer, value interface{}) error {
+func (s *Slice) Append(pointer *Pointer, value interface{}) error {
 	if !pointer.IsTarget() {
 		index, err := strconv.Atoi(pointer.Head())
 		if err != nil {
@@ -29,8 +29,8 @@ func (s *Slice) Append(pointer Pointer, value interface{}) error {
 	return nil
 }
 
-func (s *Slice) Get(pointer Pointer) (Element, error) {
-	if !pointer.HasChild() {
+func (s *Slice) Get(pointer *Pointer) (Element, error) {
+	if pointer == nil || !pointer.HasChild() {
 		return s, nil
 	}
 
@@ -46,7 +46,7 @@ func (s *Slice) Get(pointer Pointer) (Element, error) {
 	return s.value[index].Get(pointer.Child())
 }
 
-func (s *Slice) Update(pointer Pointer, value interface{}) error {
+func (s *Slice) Update(pointer *Pointer, value interface{}) error {
 	index, err := strconv.Atoi(pointer.Head())
 	if err != nil {
 		return fmt.Errorf("cannot convert index of pointer to integer: %w", err)

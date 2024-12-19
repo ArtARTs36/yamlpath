@@ -11,7 +11,7 @@ type Str struct {
 	value string
 }
 
-func (s *Str) Append(pointer Pointer, value interface{}) error {
+func (s *Str) Append(pointer *Pointer, value interface{}) error {
 	if !pointer.IsTarget() {
 		return errors.New("pointer is not target")
 	}
@@ -26,11 +26,11 @@ func (s *Str) Append(pointer Pointer, value interface{}) error {
 	return nil
 }
 
-func (s *Str) Get(_ Pointer) (Element, error) {
+func (s *Str) Get(_ *Pointer) (Element, error) {
 	return s, nil
 }
 
-func (s *Str) Update(pointer Pointer, value interface{}) error {
+func (s *Str) Update(pointer *Pointer, value interface{}) error {
 	if !pointer.IsTarget() {
 		return errors.New("pointer is not target")
 	}

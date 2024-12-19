@@ -10,8 +10,8 @@ type StringMap struct {
 	value *orderedmap.OrderedMap[string, Element]
 }
 
-func (m *StringMap) Append(pointer Pointer, value interface{}) error {
-	if !pointer.HasChild() {
+func (m *StringMap) Append(pointer *Pointer, value interface{}) error {
+	if pointer == nil || !pointer.HasChild() {
 		return fmt.Errorf("cannot append value to a nil pointer")
 	}
 
@@ -23,8 +23,8 @@ func (m *StringMap) Append(pointer Pointer, value interface{}) error {
 	return val.Append(pointer.Child(), value)
 }
 
-func (m *StringMap) Get(pointer Pointer) (Element, error) {
-	if !pointer.HasChild() {
+func (m *StringMap) Get(pointer *Pointer) (Element, error) {
+	if pointer == nil || !pointer.HasChild() {
 		return m, nil
 	}
 
@@ -36,7 +36,7 @@ func (m *StringMap) Get(pointer Pointer) (Element, error) {
 	return val.Get(pointer.Child())
 }
 
-func (m *StringMap) Update(pointer Pointer, value interface{}) error {
+func (m *StringMap) Update(pointer *Pointer, value interface{}) error {
 	item, exists := m.value.Get(pointer.Head())
 	if !exists {
 		val, err := resolveValueElement(value)
