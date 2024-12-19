@@ -100,5 +100,5 @@ func (m *StringMap) Marshal() ([]byte, error) {
 }
 
 func (m *StringMap) AsScalar() (interface{}, error) {
-	return m.value, nil
+	return nil, ErrElementNoScalar
 }

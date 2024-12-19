@@ -19,7 +19,7 @@ func (m *Mixed) Get(pointer *Pointer) (Element, error) {
 }
 
 func (m *Mixed) Update(pointer *Pointer, value interface{}) error {
-	if pointer.IsTarget() {
+	if pointer == nil || pointer.IsTarget() {
 		var err error
 		m.elem, err = resolveValueElement(value)
 		if err != nil {
