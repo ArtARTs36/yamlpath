@@ -31,7 +31,7 @@ func (s *Str) Get(_ *Pointer) (Element, error) {
 }
 
 func (s *Str) Update(pointer *Pointer, value interface{}) error {
-	if pointer == nil || !pointer.IsTarget() {
+	if pointer != nil && !pointer.IsTarget() {
 		return errors.New("pointer is not target")
 	}
 
